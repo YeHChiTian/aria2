@@ -55,7 +55,7 @@
 # * libssh2
 # * cppunit
 
-test -z "$HOST" && HOST=i686-w64-mingw32
+test -z "$HOST" && HOST=x86_64-w64-mingw32
 test -z "$PREFIX" && PREFIX=/usr/local/$HOST
 
 ./configure \
@@ -75,7 +75,7 @@ test -z "$PREFIX" && PREFIX=/usr/local/$HOST
     --without-libgcrypt \
     --without-libnettle \
     --with-cppunit-prefix=$PREFIX \
-    ARIA2_STATIC=yes \
+    --enable-libaria2 \
     CPPFLAGS="-I$PREFIX/include" \
     LDFLAGS="-L$PREFIX/lib" \
     PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
