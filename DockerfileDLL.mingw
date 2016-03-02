@@ -80,7 +80,8 @@ RUN cd zlib-1.2.8 && \
     AR=$HOST-ar \
     LD=$HOST-ld \
     RANLIB=$HOST-ranlib \
-    STRIP=$HOST-strip \
+    STRIP=$HOST-strip && \
+    make clean && \
     make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST
     
     #./configure \
