@@ -55,7 +55,8 @@
 # * libssh2
 # * cppunit
 
-test -z "$HOST" && HOST=x86_64-w64-mingw32
+#change HOST=x86_64-w64-mingw32 to compile 64bit
+test -z "$HOST" && HOST=i686-w64-mingw32
 test -z "$PREFIX" && PREFIX=/usr/local/$HOST
 
 ./configure \
