@@ -10,6 +10,14 @@
 # $ id=$(sudo docker create aria2-mingw)
 # $ sudo docker cp $id:/aria2/src/aria2c.exe <dest>
 # $ sudo docker rm -v $id
+#to view running/stopped docker containers
+# $ sudo docker ps -a
+# to manually connet to shell (if it stopped)
+# $ sudo socker run [ID you see from the docker ps -a]
+# $ sudo docker attach [ID ]
+# you will now have bash in the folder where it ran
+# if you type exit it will shutdown the docker container so u will need to run it again.
+
 
 FROM ubuntu
 
@@ -73,12 +81,14 @@ RUN cd zlib-1.2.8 && \
     LD=$HOST-ld \
     RANLIB=$HOST-ranlib \
     STRIP=$HOST-strip \
-    ./configure \
-    --prefix=/usr/local/$HOST \
-    --libdir=/usr/local/$HOST/lib \
-    --includedir=/usr/local/$HOST/include \
-    --static && \
-    make install
+    make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST
+    
+    #./configure \
+    #--prefix=/usr/local/$HOST \
+    #--libdir=/usr/local/$HOST/lib \
+    #--includedir=/usr/local/$HOST/include \
+    #--static && \
+    #make install
 
 RUN tar xf c-ares-1.10.0.tar.gz
 RUN cd c-ares-1.10.0 && \
