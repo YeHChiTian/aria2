@@ -81,7 +81,8 @@ RUN cd zlib-1.2.8 && \
     LD=$HOST-ld \
     RANLIB=$HOST-ranlib \
     STRIP=$HOST-strip && \
-    make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST
+    make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST LIBRARY_PATH=/lib BINARY_PATH=/bin INCLUDE_PATH=/include
+
     
     #./configure \
     #--prefix=/usr/local/$HOST \
