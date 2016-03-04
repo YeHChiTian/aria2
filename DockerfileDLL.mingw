@@ -121,7 +121,7 @@ RUN cd libssh2-1.6.0 && \
     --with-wincng \
     LIBS="-lws2_32" && \
     make install && \
-    ln -s /usr/local/$HOST/lib/pkgconfig/zlib.pc /usr/$HOST/lib/pkgconfig/zlib.pc
+    ln -s /usr/local/$HOST/lib/pkgconfig/libssh2.pc /usr/$HOST/lib/pkgconfig/libssh2.pc
 
 RUN git clone https://github.com/eyalfishler/aria2.git
 RUN cd aria2 && autoreconf -i && ./mingw-configDLL && make && \
