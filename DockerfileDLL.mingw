@@ -42,6 +42,13 @@ RUN curl -L -O http://zlib.net/zlib-1.2.8.tar.xz
 RUN curl -L -O http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz
 RUN curl -L -O http://libssh2.org/download/libssh2-1.6.0.tar.gz
 
+RUN mkdir /usr/$HOST/lib/pkgconfig
+RUN unlink /usr/$HOST/lib/pkgconfig/expat.pc
+RUN unlink /usr/$HOST/lib/pkgconfig/libcares.pc
+RUN unlink /usr/$HOST/lib/pkgconfig/libssh2.pc
+RUN unlink /usr/$HOST/lib/pkgconfig/sqlite3.pc
+RUN unlink /usr/$HOST/lib/pkgconfig/zlib.pc
+
 RUN tar xf gmp-6.1.0.tar.lz
 RUN cd gmp-6.1.0 && \
     ./configure \
@@ -62,7 +69,9 @@ RUN cd expat-2.1.0 && \
     --prefix=/usr/local/$HOST \
     --host=$HOST \
     --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
-    make install
+    make install && \
+    ln -s /usr/local/$HOST/lib/pkgconfig/expat.pc /usr/$HOST/lib/pkgconfig/expat.pc 
+
 
 RUN tar xf sqlite-autoconf-3100200.tar.gz
 RUN cd sqlite-autoconf-3100200 && \
@@ -72,7 +81,9 @@ RUN cd sqlite-autoconf-3100200 && \
     --prefix=/usr/local/$HOST \
     --host=$HOST \
     --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
-    make install
+    make install && \   
+    ln -s /usr/local/$HOST/lib/pkgconfig/sqlite3.pc /usr/$HOST/lib/pkgconfig/sqlite3.pc 
+
 
 RUN tar xf zlib-1.2.8.tar.xz
 RUN cd zlib-1.2.8 && \
@@ -81,15 +92,8 @@ RUN cd zlib-1.2.8 && \
     LD=$HOST-ld \
     RANLIB=$HOST-ranlib \
     STRIP=$HOST-strip && \
-    make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST LIBRARY_PATH=/lib BINARY_PATH=/bin INCLUDE_PATH=/include
-
-    
-    #./configure \
-    #--prefix=/usr/local/$HOST \
-    #--libdir=/usr/local/$HOST/lib \
-    #--includedir=/usr/local/$HOST/include \
-    #--static && \
-    #make install
+    make install -f win32/Makefile.gcc PREFIX=$HOST- SHARED_MODE=1 DESTDIR=/usr/local/$HOST LIBRARY_PATH=/lib BINARY_PATH=/bin INCLUDE_PATH=/include && \
+    ln -s /usr/local/$HOST/lib/pkgconfig/zlib.pc /usr/$HOST/lib/pkgconfig/zlib.pc 
 
 RUN tar xf c-ares-1.10.0.tar.gz
 RUN cd c-ares-1.10.0 && \
@@ -101,7 +105,8 @@ RUN cd c-ares-1.10.0 && \
     --host=$HOST \
     --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` \
     LIBS="-lws2_32" && \
-    make install
+    make install && \
+    ln -s /usr/local/$HOST/lib/pkgconfig/libcares.pc /usr/$HOST/lib/pkgconfig/libcares.pc 
 
 
 RUN tar xf libssh2-1.6.0.tar.gz
@@ -115,7 +120,8 @@ RUN cd libssh2-1.6.0 && \
     --without-openssl \
     --with-wincng \
     LIBS="-lws2_32" && \
-    make install
+    make install && \
+    ln -s /usr/local/$HOST/lib/pkgconfig/zlib.pc /usr/$HOST/lib/pkgconfig/zlib.pc
 
 RUN git clone https://github.com/eyalfishler/aria2.git
 RUN cd aria2 && autoreconf -i && ./mingw-configDLL && make && \
